@@ -1,5 +1,34 @@
+#pragma once
 #include "SFML\Graphics.hpp"
-#include ""
+
+#include "ecm.h"
+#include "positionComponent.h"
+#include "SpriteComponent.h"
+
+Manager manager;
+
+auto& player(manager.addEntity());
+auto& player2(manager.addEntity());
+
+void Load() {
+	player.addComponent<SpriteComponent>(sf::IntRect(0,0,41,69), 100, 100, "bin/car_green_small_1.png");
+	player2.addComponent<SpriteComponent>(sf::IntRect(0, 0, 100, 100), 500, 500, "bin/Cars.jpg");
+
+
+	//player2.addComponent<PositionComponent>(500, 500);
+}
+
+void Update() {
+	player.update();
+	//manager.update();
+}
+
+void Render(sf::RenderWindow & window)
+{
+	//player.draw(window);
+	manager.draw(window);
+}
+
 int main()
 {
 	//creates window and sets to fullscreen 
@@ -9,7 +38,7 @@ int main()
 	//turns on Vsync ********* Helps prevent screen tearing. caps to 60 FPS or 30 FPS ********* 
 	window.setVerticalSyncEnabled(true);
 
-
+	Load();
 
 	while (window.isOpen())
 	{
@@ -27,7 +56,9 @@ int main()
 
 			// game loop			
 			window.clear();
+			Render(window);
 			window.display();
 		}
 	}
 }
+

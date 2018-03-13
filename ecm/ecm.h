@@ -1,5 +1,5 @@
 #pragma once
-
+#include "SFML\Graphics.hpp"
 
 //taken from lets make games https://www.youtube.com/watch?v=XsvI8Sng6dk
 
@@ -39,54 +39,54 @@ using ComponentBitSet = std::bitset<maxComponents>;
 using ComponentArray = std::array<Component*, maxComponents>;
 
 
-class Component {
+class Component : public sf::Sprite {
 public:
 	Entity * entity;
 
 	virtual void init() {}
 	virtual	void update() {}
-	virtual	void draw() {}
+	virtual	void draw(sf::RenderWindow & window) {}
 
 	virtual ~Component() {}
 };
 
-class Entity {
+
+class Entity : public sf::Sprite {
 private:
 	bool active = true;
 	std::vector<std::unique_ptr<Component>> components;
-
-	ComponentArray componentarray;
+	ComponentArray componentArray;
 	ComponentBitSet componentBitSet;
 public:
+	//Moved from private to public and added Static - This removes 
+	//the error in update function in ecm.cpp
 
 	//we should move this into ecm.cpp if we can!!!!!
 	void update() {
-
-		for (auto& c : components) c->update();
-		for (auto& c : components) c->draw();
+		for (auto& c : components) c->update();	
 	}
 
-	void draw() {}
+	void draw(sf::RenderWindow & window) {
+		for (auto& c : components) c->draw(window);
+	}
 
 	bool isActive() const { return active; }
 	void destroy() { active = false; }
 
 	//checks if component is attached
 	template<typename T> bool hasComponent() const {
-
-		return componentBitSet[getComponentID<T>];
+		return componentBitSet[getComponentTypeID<T>];
 	}
 
-	template<typename T, typename TAtgs>
-	T& addComponent(TArgs&& ... mArgs) {
+	template<typename T, typename... TArgs> T& addComponent(TArgs&&... mArgs) {
 		T* c(new T(std::forward<TArgs>(mArgs)...));
 		c->entity = this;
-		std::unique_ptr<Component> uptr{ c };
-		components.emplace_back::stdmove(uptr));
+		std::unique_ptr<Component> uPtr{ c };
+		components.emplace_back(std::move(uPtr));
 
 		//makes sure component types are added to same position in array
-		ComponentArray[getComponentTypeID<T>()] = c;
-		ComponentBitSet[getComponentTypeID<T>()] = true;
+		componentArray[getComponentTypeID<T>()] = c;
+		componentBitSet[getComponentTypeID<T>()] = true;
 
 		c->init();
 
@@ -95,12 +95,13 @@ public:
 
 	template<typename T> T& getComponent() const {
 
-		auto ptr(ComponentArray[getComponentTypeID<T>()]);
+		auto ptr(componentArray[getComponentTypeID<T>()]);
 		return *static_cast<T*>(ptr);
 	}
 };
 
-class manager {
+
+class Manager {
 private:
 	std::vector<std::unique_ptr<Entity>> entities;
 
@@ -110,13 +111,12 @@ public:
 		for (auto& e : entities) e->update();
 	}
 
-	void draw() {
-		for (auto& e : entities) e->draw();
+	void draw(sf::RenderWindow & window) {
+		for (auto& e : entities) e->draw(window);
 	}
 
 	void refresh() {
 		entities.erase(std::remove_if(std::begin(entities), std::end(entities),
-
 			[](const std::unique_ptr<Entity> &mEntity)
 		{
 			return !mEntity->isActive();
@@ -132,3 +132,4 @@ public:
 		return *e;
 	}
 };
+
