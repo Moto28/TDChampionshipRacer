@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML\Graphics.hpp"
+#include "Box2D\Box2D.h"
 
 //taken from lets make games https://www.youtube.com/watch?v=XsvI8Sng6dk
 
@@ -53,17 +54,19 @@ public:
 
 class Entity : public sf::Sprite {
 private:
+
 	bool active = true;
 	std::vector<std::unique_ptr<Component>> components;
 	ComponentArray componentArray;
 	ComponentBitSet componentBitSet;
 public:
+	b2Body * body;
 	//Moved from private to public and added Static - This removes 
 	//the error in update function in ecm.cpp
 
 	//we should move this into ecm.cpp if we can!!!!!
 	void update() {
-		for (auto& c : components) c->update();	
+		for (auto& c : components) c->update();
 	}
 
 	void draw(sf::RenderWindow & window) {

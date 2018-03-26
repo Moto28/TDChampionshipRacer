@@ -1,8 +1,11 @@
+#pragma once
 #include "menu.h"
+#include "gameScreen.h"
 #include <iostream>
 
 sf::Texture texture;
 sf::Sprite sprite;
+GameScreen gameScreen(1980, 1020);
 
 Menu::Menu(float width, float height) {
 
@@ -184,19 +187,27 @@ void Menu::MenuEvents(sf::RenderWindow &window) {
 				if (menu[0].getGlobalBounds().contains(mousePosF))
 				{
 					std::cout << "Clicked single player, yay!" << std::endl;
+
+					sf::RenderWindow gameWindow(sf::VideoMode(900, 900), "TD Championship Racer ");
+
+					while (true)
+					{
+						window.close();
+						gameScreen.draw(gameWindow);
+					}
 				}
 
-				if (menu[1].getGlobalBounds().contains(mousePosF))
+				else if (menu[1].getGlobalBounds().contains(mousePosF))
 				{
 					std::cout << "Clicked multiplayer, yay!" << std::endl;
 				}
 
-				if (menu[2].getGlobalBounds().contains(mousePosF))
+				else if (menu[2].getGlobalBounds().contains(mousePosF))
 				{
 					std::cout << "Clicked options, yay!" << std::endl;
 				}
 
-				if (menu[3].getGlobalBounds().contains(mousePosF))
+				else if (menu[3].getGlobalBounds().contains(mousePosF))
 				{
 					window.close();
 				}
@@ -204,12 +215,13 @@ void Menu::MenuEvents(sf::RenderWindow &window) {
 
 
 			}
-
-			}
 			//menu loop
 			window.clear();
 			draw(window);
 			window.display();
+
+			}
+
 		}
 	}
 }
