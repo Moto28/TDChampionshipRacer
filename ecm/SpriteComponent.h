@@ -1,10 +1,10 @@
 #pragma once
 #include "SFML\Graphics.hpp"
-#include "positionComponent.h"
+//#include "positionComponent.h"
 
 class SpriteComponent : public Component {
 private:
-	PositionComponent * position;
+	//PositionComponent * position;
 	sf::Texture spritesheet;
 	sf::IntRect _sprite;
 
@@ -14,7 +14,7 @@ public:
 	SpriteComponent() = default;
 
 	//constructor that takes a sprite
-	SpriteComponent(sf::IntRect ir, int x, int y, const char* path) {
+	SpriteComponent(sf::IntRect ir, float x, float y, const char* path) {
 		_sprite = ir;
 
 		if (!spritesheet.loadFromFile(path))
@@ -27,9 +27,9 @@ public:
 	}
 
 	void init() override {
-		position = &entity->getComponent<PositionComponent>();
+		//position = &entity->getComponent<PositionComponent>();
 		//this->setPosition(100,100);
-		
+
 
 	}
 
@@ -38,7 +38,7 @@ public:
 	}
 
 	//might need to re-add overrride later
-	void draw(sf::RenderWindow &window)  {
+	void draw(sf::RenderWindow &window) {
 		window.draw(*this);
 	}
 };
