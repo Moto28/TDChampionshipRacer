@@ -30,7 +30,6 @@ Menu::Menu(float width, float height) {
 	menu[0].setOrigin(menu->getGlobalBounds().width / 2.f, menu->getGlobalBounds().height / 2.f);
 
 
-
 	menu[1].setFont(font);
 	menu[1].setCharacterSize(30);
 	menu[1].setFillColor(sf::Color(255, 255, 255, 255));
@@ -97,8 +96,6 @@ void Menu::MoveDown() {
 
 void Menu::MenuEvents(sf::RenderWindow &window) {
 
-
-
 	while (window.isOpen()) {
 
 		sf::Event event;
@@ -114,22 +111,16 @@ void Menu::MenuEvents(sf::RenderWindow &window) {
 
 				case sf::Keyboard::Up:
 
-					if (GetPressedItem() == 0)
+					if (GetPressedItem() != 0)
 					{
-
-					}
-					else {
 						MoveUp();
 					}
 					break;
 
 				case sf::Keyboard::Down:
 
-					if (GetPressedItem() == 3)
+					if (GetPressedItem() != 3)
 					{
-
-					}
-					else {
 						MoveDown();
 					}
 					break;
@@ -155,33 +146,36 @@ void Menu::MenuEvents(sf::RenderWindow &window) {
 				//works but f's up keyboard with keyboard input
 			case sf::Event::MouseMoved:
 			{
-
 				if (menu[0].getGlobalBounds().contains(mousePosF)) {
 					menu[0].setFillColor(sf::Color(255, 0, 0, 255));
-				}
-				else {
-					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
+					selectedItemIndex = 0;
 				}
 
 				if (menu[1].getGlobalBounds().contains(mousePosF)) {
 					menu[1].setFillColor(sf::Color(255, 0, 0, 255));
-				}
-				else {
-					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
+					selectedItemIndex = 1;
 				}
 
 				if (menu[2].getGlobalBounds().contains(mousePosF)) {
 					menu[2].setFillColor(sf::Color(255, 0, 0, 255));
-				}
-				else {
-					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
+					selectedItemIndex = 2;
 				}
 
 				if (menu[3].getGlobalBounds().contains(mousePosF)) {
 					menu[3].setFillColor(sf::Color(255, 0, 0, 255));
-				}
-				else {
-					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
+					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
+					selectedItemIndex = 3;
 				}
 				break;
 			case sf::Event::MouseButtonPressed:
