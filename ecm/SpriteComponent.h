@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML\Graphics.hpp"
+#include "ecm.h"
 //#include "positionComponent.h"
 
 class SpriteComponent : public Component {
@@ -7,40 +8,18 @@ private:
 	//PositionComponent * position;
 	sf::Texture spritesheet;
 	sf::IntRect _sprite;
+	sf::Sprite sprite;
 
 public:
-
 	//default constructor
-	SpriteComponent() = default;
+	SpriteComponent();
 
 	//constructor that takes a sprite
-	SpriteComponent(sf::IntRect ir, float x, float y, const char* path) {
-		_sprite = ir;
+	SpriteComponent(sf::IntRect, float, float, const char*);
 
-		if (!spritesheet.loadFromFile(path))
-		{
-			std::cerr << "Failed to load spritesheet" << std::endl;
-		}
-		setTexture(spritesheet);
-		setTextureRect(_sprite);
-		setPosition(x, y);
-	}
+	void update() override;
 
-	void init() override {
-		//position = &entity->getComponent<PositionComponent>();
-		//this->setPosition(100,100);
-
-
-	}
-
-	void update() override {
-
-	}
-
-	//might need to re-add overrride later
-	void draw(sf::RenderWindow &window) {
-		window.draw(*this);
-	}
+	void draw(sf::RenderWindow &);
 };
 
 extern sf::Texture spritesheet;

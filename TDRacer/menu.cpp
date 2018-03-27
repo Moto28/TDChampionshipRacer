@@ -215,13 +215,13 @@ void Menu::MenuEvents(sf::RenderWindow &window) {
 
 
 			}
+			
+
+			}
 			//menu loop
 			window.clear();
 			draw(window);
 			window.display();
-
-			}
-
 		}
 	}
 }
